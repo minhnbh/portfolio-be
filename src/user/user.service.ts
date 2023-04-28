@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { getPaginationData } from 'src/common/utils';
 
 @Injectable()
 export class UserService {
@@ -34,8 +35,9 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(page: number, limit: number) {
+    const data = await this.userRepository.find();
+    return getPaginationData(data, page, limit);
   }
 
   findOne(id: number) {
